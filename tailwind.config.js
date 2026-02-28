@@ -43,6 +43,14 @@ export default {
         float: 'float 6s ease-in-out infinite',
         'shooting-star': 'shootingStar 3s linear infinite',
         orbit: 'orbit 20s linear infinite',
+        // Orbit galaxy animations
+        'orbit-cw-fast': 'orbitSpin 15s linear infinite',
+        'orbit-ccw-fast': 'orbitSpin 15s linear infinite reverse',
+        'orbit-ccw-med': 'orbitSpin 25s linear infinite reverse',
+        'orbit-cw-med': 'orbitSpin 25s linear infinite',
+        'orbit-cw-slow': 'orbitSpin 40s linear infinite',
+        'orbit-ccw-slow': 'orbitSpin 40s linear infinite reverse',
+        'pulse-glow': 'pulseGlow 3s ease-in-out infinite',
       },
       keyframes: {
         gradient: {
@@ -69,6 +77,20 @@ export default {
           '0%': { transform: 'rotate(0deg) translateX(150px) rotate(0deg)' },
           '100%': {
             transform: 'rotate(360deg) translateX(150px) rotate(-360deg)',
+          },
+        },
+        orbitSpin: {
+          from: { transform: 'rotate(0deg)' },
+          to: { transform: 'rotate(360deg)' },
+        },
+        pulseGlow: {
+          '0%, 100%': {
+            boxShadow:
+              '0 0 20px rgba(56,189,248,0.3), 0 0 60px rgba(99,102,241,0.15)',
+          },
+          '50%': {
+            boxShadow:
+              '0 0 40px rgba(56,189,248,0.5), 0 0 80px rgba(99,102,241,0.3)',
           },
         },
       },

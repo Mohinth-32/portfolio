@@ -2,6 +2,31 @@ import { useEffect, useRef } from 'react';
 
 export default function StarField() {
   const canvasRef = useRef(null);
+  const smallRef = useRef(null);
+  const mediumRef = useRef(null);
+  const largeRef = useRef(null);
+
+  // Scroll-based parallax for star layers
+  useEffect(() => {
+    let ticking = false;
+    const onScroll = () => {
+      if (!ticking) {
+        ticking = true;
+        requestAnimationFrame(() => {
+          const y = window.scrollY;
+          if (smallRef.current)
+            smallRef.current.style.transform = `translateY(${y * 0.05}px)`;
+          if (mediumRef.current)
+            mediumRef.current.style.transform = `translateY(${y * 0.15}px)`;
+          if (largeRef.current)
+            largeRef.current.style.transform = `translateY(${y * 0.3}px)`;
+          ticking = false;
+        });
+      }
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, []);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -81,9 +106,9 @@ export default function StarField() {
     <>
       {/* CSS star layers */}
       <div className="starfield">
-        <div className="stars-layer stars-small" />
-        <div className="stars-layer stars-medium" />
-        <div className="stars-layer stars-large" />
+        <div ref={smallRef} className="stars-layer stars-small" />
+        <div ref={mediumRef} className="stars-layer stars-medium" />
+        <div ref={largeRef} className="stars-layer stars-large" />
       </div>
       {/* Canvas for shooting stars */}
       <canvas
