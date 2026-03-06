@@ -117,9 +117,21 @@ export default function Hero() {
           className="mt-14 flex items-center justify-center gap-5"
         >
           {[
-            { icon: Github, href: 'https://github.com', label: 'GitHub' },
-            { icon: Linkedin, href: 'https://linkedin.com', label: 'LinkedIn' },
-            { icon: Mail, href: 'mailto:hello@example.com', label: 'Email' },
+            {
+              icon: Github,
+              href: 'https://github.com/Mohinth-32',
+              label: 'GitHub',
+            },
+            {
+              icon: Linkedin,
+              href: 'https://www.linkedin.com/in/mohinth-bala-seshan-34b6b2250',
+              label: 'LinkedIn',
+            },
+            {
+              icon: Mail,
+              href: 'mailto:mohinthsam2@gmail.com',
+              label: 'Email',
+            },
           ].map(({ icon: Icon, href, label }) => (
             <a
               key={label}

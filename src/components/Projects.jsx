@@ -61,7 +61,7 @@ export default function Projects() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="mb-16"
+          className="mb-16 text-center"
         >
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             Projects
@@ -69,7 +69,7 @@ export default function Projects() {
           <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
             Featured <span className="text-gradient">work</span>
           </h2>
-          <p className="mt-4 max-w-xl text-lg text-neutral-400">
+          <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-400">
             A selection of projects that showcase my skills and passion.
           </p>
         </motion.div>

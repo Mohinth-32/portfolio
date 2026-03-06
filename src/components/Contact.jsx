@@ -1,38 +1,68 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { Send, Mail, MapPin, Phone } from 'lucide-react';
+import { Send, Mail, MapPin, Phone, Linkedin } from 'lucide-react';
 
 const contactInfo = [
   {
     icon: Mail,
     label: 'Email',
-    value: 'hello@example.com',
-    href: 'mailto:hello@example.com',
+    value: 'mohinthsam2@gmail.com',
+    href: 'mailto:mohinthsam2@gmail.com',
   },
-  { icon: MapPin, label: 'Location', value: 'Dhaka, Bangladesh', href: '#' },
   {
-    icon: Phone,
-    label: 'Phone',
-    value: '+880 1XXX-XXXXXX',
-    href: 'tel:+8801000000000',
+    icon: Linkedin,
+    label: 'LinkedIn',
+    value: 'Mohinth bala seshan',
+    href: 'https://www.linkedin.com/in/mohinth-bala-seshan-34b6b2250',
+  },
+  {
+    icon: MapPin,
+    label: 'Location',
+    value: 'Madurai, Tamil Nadu',
+    href: 'https://www.google.com/maps/place/Madurai',
   },
 ];
 
 export default function Contact() {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: '-100px' });
-  const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    subject: '',
+    message: '',
+  });
   const [submitted, setSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
 
   const handleChange = (e) =>
     setForm({ ...form, [e.target.name]: e.target.value });
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // In production, wire this to an API / email service
-    setSubmitted(true);
-    setTimeout(() => setSubmitted(false), 4000);
-    setForm({ name: '', email: '', message: '' });
+    setLoading(true);
+    try {
+      await fetch('https://formsubmit.co/ajax/mohinthsam2@gmail.com', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          name: form.name,
+          email: form.email,
+          _subject: form.subject,
+          message: form.message,
+        }),
+      });
+      setSubmitted(true);
+      setTimeout(() => setSubmitted(false), 4000);
+      setForm({ name: '', email: '', subject: '', message: '' });
+    } catch (err) {
+      console.error('Form submission error:', err);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -47,7 +77,7 @@ export default function Contact() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="mb-16"
+          className="mb-16 text-center"
         >
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             Contact
@@ -55,7 +85,7 @@ export default function Contact() {
           <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
             Let's <span className="text-gradient">connect</span>
           </h2>
-          <p className="mt-4 max-w-xl text-lg text-neutral-400">
+          <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-400">
             Have a project in mind or just want to say hi? I'd love to hear from
             you.
           </p>
@@ -141,6 +171,24 @@ export default function Contact() {
             </div>
             <div>
               <label
+                htmlFor="subject"
+                className="mb-2 block text-xs font-medium uppercase tracking-wider text-neutral-500"
+              >
+                Subject
+              </label>
+              <input
+                id="subject"
+                name="subject"
+                type="text"
+                required
+                value={form.subject}
+                onChange={handleChange}
+                placeholder="What's this about?"
+                className="w-full rounded-xl border border-white/[0.06] bg-white/[0.03] px-4 py-3 text-sm text-white placeholder-neutral-600 outline-none transition-all duration-300 focus:border-accent/40 focus:ring-1 focus:ring-accent/20"
+              />
+            </div>
+            <div>
+              <label
                 htmlFor="message"
                 className="mb-2 block text-xs font-medium uppercase tracking-wider text-neutral-500"
               >
@@ -159,9 +207,14 @@ export default function Contact() {
             </div>
             <button
               type="submit"
+              disabled={loading}
               className="group inline-flex items-center gap-2 rounded-full bg-accent px-7 py-3.5 text-sm font-semibold text-white shadow-lg shadow-accent/25 transition-all duration-300 hover:shadow-xl hover:shadow-accent/30 hover:-translate-y-0.5 disabled:opacity-50"
             >
-              {submitted ? 'Message Sent!' : 'Send Message'}
+              {loading
+                ? 'Sending...'
+                : submitted
+                  ? 'Message Sent!'
+                  : 'Send Message'}
               <Send
                 size={16}
                 className="transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"

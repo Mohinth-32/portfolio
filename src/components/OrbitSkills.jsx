@@ -183,6 +183,9 @@ export default function OrbitSkills() {
   const sectionRef = useRef(null);
   const inView = useInView(sectionRef, { once: true, margin: '-80px' });
 
+  /* Pause / resume orbit animations on profile click */
+  const [paused, setPaused] = useState(false);
+
   /* Responsive config based on viewport width */
   const [cfg, setCfg] = useState(breakpoints[breakpoints.length - 1]);
 
@@ -239,7 +242,7 @@ export default function OrbitSkills() {
         initial={{ opacity: 0, scale: 0.85 }}
         animate={inView ? { opacity: 1, scale: 1 } : {}}
         transition={{ duration: 1.2, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="orbit-galaxy relative z-10 flex-shrink-0"
+        className={`orbit-galaxy relative z-10 flex-shrink-0${paused ? ' orbit-paused' : ''}`}
         style={{
           width: galaxySize,
           height: galaxySize,
@@ -263,8 +266,17 @@ export default function OrbitSkills() {
         {/* ── Center profile image ── */}
         <div className="absolute left-1/2 top-1/2 z-30 -translate-x-1/2 -translate-y-1/2">
           <div
-            className="animate-pulse-glow rounded-full bg-gradient-to-br from-nebula-cyan via-accent to-nebula-purple p-[3px]"
+            className="animate-pulse-glow cursor-pointer rounded-full bg-gradient-to-br from-nebula-cyan via-accent to-nebula-purple p-[3px] transition-transform duration-200 hover:scale-105 active:scale-95"
             style={{ width: cfg.profileSize, height: cfg.profileSize }}
+            onClick={() => setPaused((p) => !p)}
+            role="button"
+            aria-label={
+              paused ? 'Resume orbit animations' : 'Pause orbit animations'
+            }
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter' || e.key === ' ') setPaused((p) => !p);
+            }}
           >
             <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-full bg-dark-950">
               {/* Fallback initial — hidden when image loads */}
@@ -306,7 +318,7 @@ export default function OrbitSkills() {
             /* Centering wrapper — uses margin so transform is free for rotation */
             <div
               key={`orbit-layer-${orbitIdx}`}
-              className="absolute left-1/2 top-1/2"
+              className="pointer-events-none absolute left-1/2 top-1/2"
               style={{
                 width: diameter,
                 height: diameter,
@@ -375,7 +387,7 @@ export default function OrbitSkills() {
 
 function SkillIcon({ skill, size, imgSize }) {
   return (
-    <div className="group/skill relative cursor-pointer">
+    <div className="group/skill pointer-events-auto relative cursor-pointer">
       {/* Icon circle */}
       <div
         className="flex items-center justify-center rounded-full border border-white/[0.08] bg-dark-800/90 shadow-lg shadow-black/40 backdrop-blur-sm transition-all duration-300 group-hover/skill:scale-[1.3] group-hover/skill:border-accent/40 group-hover/skill:bg-dark-700/95 group-hover/skill:shadow-accent/25 group-hover/skill:shadow-xl"

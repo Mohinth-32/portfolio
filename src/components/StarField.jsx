@@ -15,11 +15,11 @@ export default function StarField() {
         requestAnimationFrame(() => {
           const y = window.scrollY;
           if (smallRef.current)
-            smallRef.current.style.transform = `translateY(${y * 0.05}px)`;
+            smallRef.current.style.transform = `translateY(${y * -0.05}px)`;
           if (mediumRef.current)
-            mediumRef.current.style.transform = `translateY(${y * 0.15}px)`;
+            mediumRef.current.style.transform = `translateY(${y * -0.15}px)`;
           if (largeRef.current)
-            largeRef.current.style.transform = `translateY(${y * 0.3}px)`;
+            largeRef.current.style.transform = `translateY(${y * -0.3}px)`;
           ticking = false;
         });
       }

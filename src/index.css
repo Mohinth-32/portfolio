@@ -187,7 +187,7 @@ body {
 }
 
 /* ── Orbit Galaxy ────────────────────────────── */
-/* Pause all orbit animations when hovering the galaxy */
-.orbit-galaxy:hover .orbit-anim {
+/* Pause all orbit animations when the galaxy is toggled paused */
+.orbit-galaxy.orbit-paused .orbit-anim {
   animation-play-state: paused;
 }

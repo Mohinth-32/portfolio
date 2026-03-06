@@ -46,7 +46,7 @@ export default function Skills() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="mb-16"
+          className="mb-16 text-center"
         >
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             Skills
@@ -54,7 +54,7 @@ export default function Skills() {
           <h2 className="mt-3 text-4xl font-bold tracking-tight sm:text-5xl">
             My <span className="text-gradient">toolkit</span>
           </h2>
-          <p className="mt-4 max-w-xl text-lg text-neutral-400">
+          <p className="mx-auto mt-4 max-w-xl text-lg text-neutral-400">
             Technologies and tools I use to bring products to life.
           </p>
         </motion.div>

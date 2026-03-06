@@ -32,7 +32,7 @@ export default function About() {
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
           transition={{ duration: 0.7 }}
-          className="mb-16"
+          className="mb-16 text-center"
         >
           <span className="text-xs font-semibold uppercase tracking-[0.2em] text-accent">
             About
@@ -65,9 +65,9 @@ export default function About() {
             {/* Stats */}
             <div className="mt-10 flex gap-10">
               {[
-                { value: '3+', label: 'Years Experience' },
+                { value: '1+', label: 'Years Experience' },
                 { value: '20+', label: 'Projects Built' },
-                { value: '10+', label: 'Happy Clients' },
+                { value: '5+', label: 'Happy Clients' },
               ].map((stat) => (
                 <div key={stat.label}>
                   <div className="text-3xl font-bold text-gradient">
