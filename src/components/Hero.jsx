@@ -1,5 +1,6 @@
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { ArrowDown, Github, Linkedin, Mail } from 'lucide-react';
+import { useState, useEffect, useCallback } from 'react';
 
 const sentence = {
   hidden: { opacity: 0 },
@@ -18,8 +19,89 @@ const letter = {
   },
 };
 
+// "Mohinth" in various Indian languages
+const nameVariants = [
+  'மோஹிந்த்', // Tamil
+  'मोहिंथ', // Hindi
+  'మోహింత్', // Telugu
+  'ಮೋಹಿಂತ್', // Kannada
+  'മോഹിന്ത്', // Malayalam
+  'モヒント', // Japanese (Katakana)
+  '莫欣特', // Chinese Simplified (used in Singapore)
+  'မိုဟင့်သ်', // Burmese (Myanmar)
+  'ម៉ូហិនថ៍', // Khmer (Cambodia)
+  'โมฮินธ์', // Thai
+  'Mohinth', // English (final)
+];
+
+function SlotMachineName({ startDelay = 0.8 }) {
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isSpinning, setIsSpinning] = useState(false);
+  const [isDone, setIsDone] = useState(false);
+
+  const spin = useCallback(() => {
+    setIsSpinning(true);
+    const totalSteps = nameVariants.length * 3 + nameVariants.length - 1; // cycle 3 times then land on last
+    let step = 0;
+
+    const tick = () => {
+      step++;
+      const idx = step % nameVariants.length;
+      setCurrentIndex(idx);
+
+      if (step >= totalSteps) {
+        // Land on final "Mohinth"
+        setCurrentIndex(nameVariants.length - 1);
+        setIsSpinning(false);
+        setIsDone(true);
+        return;
+      }
+
+      // Slow down progressively: fast at start, slow near end
+      const progress = step / totalSteps;
+      let delay;
+      if (progress < 0.5) {
+        delay = 60; // fast
+      } else if (progress < 0.75) {
+        delay = 100 + (progress - 0.5) * 400; // medium
+      } else {
+        delay = 200 + (progress - 0.75) * 800; // slow
+      }
+
+      setTimeout(tick, delay);
+    };
+
+    tick();
+  }, []);
+
+  useEffect(() => {
+    const timer = setTimeout(spin, startDelay * 1000);
+    return () => clearTimeout(timer);
+  }, [spin, startDelay]);
+
+  return (
+    <span className="relative inline-block min-w-[4ch] text-gradient">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={currentIndex}
+          initial={isSpinning ? { y: 30, opacity: 0 } : false}
+          animate={{ y: 0, opacity: 1 }}
+          exit={isSpinning ? { y: -30, opacity: 0 } : undefined}
+          transition={{
+            duration: isSpinning ? 0.08 : 0.4,
+            ease: isSpinning ? 'linear' : [0.22, 1, 0.36, 1],
+          }}
+          className={`inline-block ${isDone ? 'slot-done' : ''}`}
+        >
+          {nameVariants[currentIndex]}
+        </motion.span>
+      </AnimatePresence>
+    </span>
+  );
+}
+
 export default function Hero() {
-  const heading = "Hi, I'm Mohin";
+  const prefix = "Hi, I'm ";
   const tagline =
     'I craft elegant digital experiences — blending design with engineering to build products people love.';
 
@@ -55,23 +137,12 @@ export default function Hero() {
           animate="visible"
           className="text-5xl font-extrabold leading-[1.1] tracking-tight sm:text-7xl lg:text-8xl"
         >
-          {heading.split('').map((char, i) => (
-            <motion.span
-              key={i}
-              variants={letter}
-              className={
-                char === 'M' ||
-                char === 'o' ||
-                char === 'h' ||
-                char === 'i' ||
-                char === 'n'
-                  ? 'text-gradient'
-                  : ''
-              }
-            >
+          {prefix.split('').map((char, i) => (
+            <motion.span key={i} variants={letter}>
               {char === ' ' ? '\u00A0' : char}
             </motion.span>
           ))}
+          <SlotMachineName startDelay={1.2} />
         </motion.h1>
 
         {/* Tagline */}

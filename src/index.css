@@ -76,6 +76,26 @@ body {
   }
 }
 
+/* ── Slot machine name landed glow ─────────── */
+.slot-done {
+  animation: slotLand 0.6s ease-out forwards;
+}
+
+@keyframes slotLand {
+  0% {
+    filter: brightness(1) drop-shadow(0 0 0 transparent);
+    transform: scale(1);
+  }
+  40% {
+    filter: brightness(1.4) drop-shadow(0 0 20px rgba(168, 85, 247, 0.6));
+    transform: scale(1.05);
+  }
+  100% {
+    filter: brightness(1) drop-shadow(0 0 0 transparent);
+    transform: scale(1);
+  }
+}
+
 /* ── Glass card (space glass) ────────────────── */
 .glass {
   background: rgba(15, 23, 42, 0.6);
